@@ -40,7 +40,7 @@ dependencies {
 
     compile 'com.jakewharton:butterknife:6.0.0'
 
-    compile 'info.metadude.java.library.halfnarp:halfnarp-client:1.0.1'
+    compile 'info.metadude.java.library.halfnarp:halfnarp-client:1.0.2'
 
     compile 'org.ligi:AXT:0.31'
     compile 'org.ligi:tracedroid:1.2'

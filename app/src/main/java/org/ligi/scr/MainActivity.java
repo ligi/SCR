@@ -5,10 +5,10 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.Menu;
+import android.view.MenuItem;
 
+import org.ligi.axt.AXT;
 import org.ligi.axt.listeners.ActivityFinishingOnClickListener;
 
 import java.util.List;
@@ -50,25 +50,7 @@ public class MainActivity extends ActionBarActivity {
                     Response response) {
 
 
-                trackRecycler.setAdapter(new RecyclerView.Adapter<EventViewHolder>() {
-                    @Override
-                    public EventViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                        final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-
-                        final View res = inflater.inflate(R.layout.item_event, parent, false);
-                        return new EventViewHolder(res);
-                    }
-
-                    @Override
-                    public void onBindViewHolder(EventViewHolder holder, int position) {
-                        holder.apply(talkPreferencesResponses.get(position));
-                    }
-
-                    @Override
-                    public int getItemCount() {
-                        return talkPreferencesResponses.size();
-                    }
-                });
+                trackRecycler.setAdapter(new EventViewHolderAdapter(talkPreferencesResponses));
             }
 
             @Override
@@ -82,4 +64,23 @@ public class MainActivity extends ActionBarActivity {
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+               finish();
+                break;
+
+            case R.id.action_help:
+                AXT.at(this).startCommonIntent().activityFromClass(HelpActivity.class);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
