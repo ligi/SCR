@@ -34,4 +34,15 @@ class EventViewHolderAdapter extends RecyclerView.Adapter<EventViewHolder> {
     public int getItemCount() {
         return talkPreferencesResponses.size();
     }
+
+
+    public TalkPreferencesResponse findById(int id) {
+        for (TalkPreferencesResponse talkPreferencesResponse : talkPreferencesResponses) {
+            if (talkPreferencesResponse.getEventId()==id) {
+                return talkPreferencesResponse;
+            }
+        }
+
+        return null;
+    }
 }

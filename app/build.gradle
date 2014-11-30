@@ -42,6 +42,8 @@ dependencies {
 
     compile 'info.metadude.java.library.halfnarp:halfnarp-client:1.0.2'
 
+    compile 'com.squareup:otto:1.3.5'
+
     compile 'org.ligi:AXT:0.31'
     compile 'org.ligi:tracedroid:1.2'
 
