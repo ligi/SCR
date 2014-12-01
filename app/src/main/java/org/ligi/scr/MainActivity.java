@@ -9,11 +9,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.squareup.otto.Subscribe;
 
 import org.ligi.axt.AXT;
 import org.ligi.axt.listeners.ActivityFinishingOnClickListener;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -47,15 +52,47 @@ public class MainActivity extends ActionBarActivity {
     }
 
     @Override
-    protected void onPostResume() {
-        super.onPostResume();
+    protected void onResume() {
+        super.onResume();
         App.bus.register(this);
+
+        if (getDataFile().exists()) {
+            try {
+                HashSet<Integer> hashSet = new Gson().fromJson(AXT.at(getDataFile()).readToString(), new TypeToken<HashSet<Integer>>() {}.getType());
+                App.talkIds.add(hashSet);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
     protected void onPause() {
+
         App.bus.unregister(this);
+
+        final Gson gson = new Gson();
+
+        final File dataFile = getDataFile();
+
+        try {
+            if (dataFile.exists()) {
+                dataFile.delete();
+            }
+
+            dataFile.createNewFile();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        AXT.at(dataFile).writeString(gson.toJson(App.talkIds));
         super.onPause();
+    }
+
+    private File getDataFile() {
+        return new File(getFilesDir(), "data");
     }
 
     private void loadData() {
@@ -91,8 +128,8 @@ public class MainActivity extends ActionBarActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         menu.findItem(R.id.action_help).setVisible(App.selectedEventId == null);
 
-        menu.findItem(R.id.action_add).setVisible(App.selectedEventId != null && !App.viewSet.contains(App.selectedEventId));
-        menu.findItem(R.id.action_remove).setVisible(App.selectedEventId != null && App.viewSet.contains(App.selectedEventId));
+        menu.findItem(R.id.action_add).setVisible(App.selectedEventId != null && !App.talkIds.getTalkIds().contains(App.selectedEventId));
+        menu.findItem(R.id.action_remove).setVisible(App.selectedEventId != null && App.talkIds.getTalkIds().contains(App.selectedEventId));
         menu.findItem(R.id.action_share).setVisible(App.selectedEventId != null);
 
 
@@ -107,13 +144,13 @@ public class MainActivity extends ActionBarActivity {
                 break;
 
             case R.id.action_add:
-                App.viewSet.add(App.selectedEventId);
+                App.talkIds.add(App.selectedEventId);
                 App.selectedEventId = null;
                 App.bus.post(new CurrentScopeChangeEvent());
                 break;
 
             case R.id.action_remove:
-                App.viewSet.remove(App.selectedEventId);
+                App.talkIds.getTalkIds().remove(App.selectedEventId);
                 App.selectedEventId = null;
                 App.bus.post(new CurrentScopeChangeEvent());
                 break;

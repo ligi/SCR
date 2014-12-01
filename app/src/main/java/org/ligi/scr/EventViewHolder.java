@@ -42,7 +42,7 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
         speakerText.setText(response.getSpeakers());
         trackText.setText(response.getTrackName());
 
-        viewIndicatorImage.setVisibility(App.viewSet.contains(Integer.valueOf(response.getEventId()))?View.VISIBLE:View.GONE);
+        viewIndicatorImage.setVisibility(App.talkIds.getTalkIds().contains(Integer.valueOf(response.getEventId()))?View.VISIBLE:View.GONE);
 
         if (App.selectedEventId==null || response.getEventId()!=App.selectedEventId) {
             root.setCardElevation(root.getContext().getResources().getDimension(R.dimen.cardview_default_elevation));

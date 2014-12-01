@@ -16,9 +16,9 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:id="@+id/viewIndicatorImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/viewIndicatorImage"
             android:src="@drawable/ic_visibility_black_36dp" />
 
         <LinearLayout
@@ -32,14 +32,32 @@
                 android:orientation="horizontal"
                 android:padding="8dp">
 
-
-                <TextView
-                    android:id="@+id/titleTV"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
-                    android:fontFamily="sans-serif-bold"
-                    tools:text="Titled" />
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/titleTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-bold"
+                        tools:text="Titled" />
+
+
+                    <TextView
+                        android:id="@+id/track"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/titleTV"
+                        android:fontFamily="sans-serif-light"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        tools:text="Hall 1" />
+
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/speaker"
@@ -49,19 +67,9 @@
                     android:layout_weight="1"
                     android:fontFamily="sans-serif-light"
                     android:gravity="right"
-                    tools:text="Speakers" />
+                    tools:text="Speakers\nfii" />
 
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/track"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/titleTV"
-                android:fontFamily="sans-serif-light"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                tools:text="Hall 1" />
 
 
             <TextView
