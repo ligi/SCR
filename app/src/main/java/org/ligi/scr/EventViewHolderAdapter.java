@@ -3,18 +3,17 @@ package org.ligi.scr;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
 
-import info.metadude.java.library.halfnarp.model.TalkPreferencesResponse;
+import info.metadude.java.library.halfnarp.model.GetTalksResponse;
 
 class EventViewHolderAdapter extends RecyclerView.Adapter<EventViewHolder> {
-    private final List<TalkPreferencesResponse> talkPreferencesResponses;
+    private final List<GetTalksResponse> talkResponses;
 
-    public EventViewHolderAdapter(List<TalkPreferencesResponse> talkPreferencesResponses) {
-        this.talkPreferencesResponses = talkPreferencesResponses;
+    public EventViewHolderAdapter(List<GetTalksResponse> talkPreferencesResponses) {
+        this.talkResponses = talkPreferencesResponses;
     }
 
     @Override
@@ -27,19 +26,19 @@ class EventViewHolderAdapter extends RecyclerView.Adapter<EventViewHolder> {
 
     @Override
     public void onBindViewHolder(EventViewHolder holder, int position) {
-        holder.apply(talkPreferencesResponses.get(position));
+        holder.apply(talkResponses.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return talkPreferencesResponses.size();
+        return talkResponses.size();
     }
 
 
-    public TalkPreferencesResponse findById(int id) {
-        for (TalkPreferencesResponse talkPreferencesResponse : talkPreferencesResponses) {
-            if (talkPreferencesResponse.getEventId()==id) {
-                return talkPreferencesResponse;
+    public GetTalksResponse findById(int id) {
+        for (GetTalksResponse talkResponse : talkResponses) {
+            if (talkResponse.getEventId() == id) {
+                return talkResponse;
             }
         }
 

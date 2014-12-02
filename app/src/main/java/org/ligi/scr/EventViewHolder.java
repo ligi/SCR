@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import info.metadude.java.library.halfnarp.model.TalkPreferencesResponse;
+import info.metadude.java.library.halfnarp.model.GetTalksResponse;
 
 public class EventViewHolder extends RecyclerView.ViewHolder {
 
@@ -33,28 +33,29 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
     public EventViewHolder(CardView itemView) {
         super(itemView);
         ButterKnife.inject(this, itemView);
-        this.root=itemView;
+        this.root = itemView;
     }
 
-    public void apply(final TalkPreferencesResponse response) {
+    public void apply(final GetTalksResponse response) {
         titleText.setText(response.getTitle());
         abstractText.setText(response.getAbstract());
         speakerText.setText(response.getSpeakers());
         trackText.setText(response.getTrackName());
 
-        viewIndicatorImage.setVisibility(App.talkIds.getTalkIds().contains(Integer.valueOf(response.getEventId()))?View.VISIBLE:View.GONE);
+        viewIndicatorImage.setVisibility(App.talkIds.getTalkIds().contains(Integer.valueOf(response.getEventId())) ? View.VISIBLE : View.GONE);
 
-        if (App.selectedEventId==null || response.getEventId()!=App.selectedEventId) {
+        if (App.selectedEventId == null || response.getEventId() != App.selectedEventId) {
             root.setCardElevation(root.getContext().getResources().getDimension(R.dimen.cardview_default_elevation));
         } else {
-            root.setCardElevation(root.getContext().getResources().getDimension(R.dimen.cardview_default_elevation));root.setCardElevation(root.getContext().getResources().getDimension(R.dimen.cardview_elevation));
+            root.setCardElevation(root.getContext().getResources().getDimension(R.dimen.cardview_default_elevation));
+            root.setCardElevation(root.getContext().getResources().getDimension(R.dimen.cardview_elevation));
         }
 
 
         root.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                App.selectedEventId=response.getEventId();
+                App.selectedEventId = response.getEventId();
                 App.bus.post(new CurrentScopeChangeEvent());
             }
         });

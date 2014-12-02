@@ -1,15 +1,18 @@
 package org.ligi.scr;
 
+import android.app.Application;
+
 import com.squareup.otto.Bus;
 
-import java.util.HashSet;
-import java.util.Set;
+public class App extends Application {
 
-import info.metadude.java.library.halfnarp.model.TalkIds;
-
-public class App {
-
+    public static final Bus bus = new Bus();
+    public static PersistentTalkIds talkIds;
     public static Integer selectedEventId;
-    public static Bus bus = new Bus();
-    public static TalkIds talkIds = new TalkIds();
+
+    @Override
+    public void onCreate() {
+        talkIds = new PersistentTalkIds(this);
+        super.onCreate();
+    }
 }
