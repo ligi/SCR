@@ -8,7 +8,6 @@ public class App extends Application {
 
     public static final Bus bus = new Bus();
     public static PersistentTalkIds talkIds;
-    public static Integer selectedEventId;
 
     @Override
     public void onCreate() {

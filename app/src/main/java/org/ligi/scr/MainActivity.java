@@ -85,12 +85,7 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.action_help).setVisible(App.selectedEventId == null);
-
-        menu.findItem(R.id.action_add).setVisible(App.selectedEventId != null && !App.talkIds.getTalkIds().contains(App.selectedEventId));
-        menu.findItem(R.id.action_remove).setVisible(App.selectedEventId != null && App.talkIds.getTalkIds().contains(App.selectedEventId));
-        menu.findItem(R.id.action_share).setVisible(App.selectedEventId != null);
-
+        menu.findItem(R.id.action_upload).setVisible(App.talkIds.size()>0);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -120,30 +115,6 @@ public class MainActivity extends ActionBarActivity {
 
                     });
                 }
-                break;
-
-            case R.id.action_add:
-                App.talkIds.add(App.selectedEventId);
-                App.selectedEventId = null;
-                App.bus.post(new CurrentScopeChangeEvent());
-                break;
-
-            case R.id.action_remove:
-                final Collection<Integer> talkIds = App.talkIds.getTalkIds();
-                talkIds.remove(App.selectedEventId);
-                App.talkIds.clear();
-                App.talkIds.add(talkIds);
-                App.talkIds.save();
-                App.selectedEventId = null;
-                App.bus.post(new CurrentScopeChangeEvent());
-                break;
-
-            case R.id.action_share:
-                final Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.putExtra(Intent.EXTRA_SUBJECT, adapter.findById(App.selectedEventId).getTitle());
-                intent.putExtra(Intent.EXTRA_TEXT, adapter.findById(App.selectedEventId).getAbstract());
-                intent.setType("text/plain");
-                startActivity(intent);
                 break;
         }
         return super.onOptionsItemSelected(item);
