@@ -11,12 +11,10 @@ import retrofit.RetrofitError;
 
 abstract class DefaultRetrofitCallback<T> implements Callback<T> {
 
-
     private final boolean fatal;
     private final Activity activity;
 
     DefaultRetrofitCallback(boolean fatal, Activity activity) {
-
         this.fatal = fatal;
         this.activity = activity;
     }

@@ -63,6 +63,7 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
                 App.talkIds.clear();
                 App.talkIds.add(talkIds);
                 App.talkIds.save();
+                App.bus.post(new TalkIdsChangeEvent());
             }
         });
 

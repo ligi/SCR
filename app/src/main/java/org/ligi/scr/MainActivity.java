@@ -1,7 +1,5 @@
 package org.ligi.scr;
 
-import android.app.AlertDialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -15,7 +13,6 @@ import com.squareup.otto.Subscribe;
 
 import org.ligi.axt.AXT;
 
-import java.util.Collection;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -125,11 +122,8 @@ public class MainActivity extends ActionBarActivity {
     }
 
     @Subscribe
-    public void onEvent(CurrentScopeChangeEvent scopeChangeEvent) {
-        if (adapter != null) {
-            adapter.notifyDataSetChanged();
-            invalidateOptionsMenu();
-        }
+    public void onEvent(TalkIdsChangeEvent scopeChangeEvent) {
+        invalidateOptionsMenu();
     }
 
 }
