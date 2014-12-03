@@ -88,7 +88,7 @@
                 android:padding="16dp"
                 android:clickable="true"
                 android:id="@+id/shareView"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
+                style="@style/ShareButton"
 
                 android:src="@drawable/ic_share_grey600_24dp" />
 

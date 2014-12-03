@@ -1,8 +1,11 @@
 <resources>
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    </style>
+
+
+    <style name="ShareButton">
+        <item name="android:background">@drawable/clickable_bg</item>
     </style>
 
 </resources>
