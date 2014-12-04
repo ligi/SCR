@@ -49,8 +49,6 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
         speakerText.setText(response.getSpeakers());
         trackText.setText(response.getTrackName());
 
-        talkSwitch.setChecked(App.talkIds.getTalkIds().contains(response.getEventId()));
-
         talkSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -66,6 +64,8 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
                 App.bus.post(new TalkIdsChangeEvent());
             }
         });
+
+        talkSwitch.setChecked(App.talkIds.getTalkIds().contains(response.getEventId()));
 
         shareView.setOnClickListener(new View.OnClickListener() {
             @Override
