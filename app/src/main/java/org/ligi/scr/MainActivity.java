@@ -3,8 +3,11 @@ package org.ligi.scr;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -38,9 +41,9 @@ public class MainActivity extends ActionBarActivity {
 
         getSupportActionBar().setSubtitle("Schedule Conflict Resolver");
         ButterKnife.inject(this);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
 
-        trackRecycler.setLayoutManager(mLayoutManager);
+        final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(getResources().getInteger(R.integer.rows), OrientationHelper.VERTICAL);
+        trackRecycler.setLayoutManager(layoutManager);
 
         loadData();
     }
@@ -49,15 +52,12 @@ public class MainActivity extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
         App.bus.register(this);
-
         App.talkIds.load();
     }
 
     @Override
     protected void onPause() {
-
         App.bus.unregister(this);
-
         App.talkIds.save();
         super.onPause();
     }
