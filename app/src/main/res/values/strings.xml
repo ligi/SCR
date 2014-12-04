@@ -8,7 +8,7 @@
         Mark the talks you want to see to crowd-avoid talk collisions in time.
 
         <h1>Detail</h1>
-        A frontend to <a href="https://github.com/tomster/halfnarp">halfnarp</a> inspired and using <a href="https://github.com/johnjohndoe/HalfnarpClient">Tobi's Halfnarp Client</a>
+        A frontend to <a href="https://github.com/tomster/halfnarp">halfnarp</a> inspired and using <a href="https://github.com/johnjohndoe/HalfnarpClient">Tobi\'s Halfnarp Client</a>
         Besides the client this app uses Butterknife and Otto from Square. Guava and the Android stuff from Google.
 
         <h1>Code</h1>
