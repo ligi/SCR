@@ -1,15 +1,21 @@
 package org.ligi.scr;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
@@ -37,10 +43,12 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         getSupportActionBar().setSubtitle("Schedule Conflict Resolver");
         ButterKnife.inject(this);
+
 
         final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(getResources().getInteger(R.integer.rows), OrientationHelper.VERTICAL);
         trackRecycler.setLayoutManager(layoutManager);
@@ -51,6 +59,21 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        try {
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                trackRecycler.setBackgroundResource(R.drawable.bg_src);
+            } else {
+                Matrix matrix = new Matrix();
+                matrix.postRotate(90);
+                Bitmap source = BitmapFactory.decodeResource(getResources(), R.drawable.bg_src);
+                trackRecycler.setBackgroundDrawable(new BitmapDrawable(getResources(), Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true)));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // form follows function
+        }
+
         App.bus.register(this);
         App.talkIds.load();
     }
@@ -82,7 +105,7 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.action_upload).setVisible(App.talkIds.size()>0);
+        menu.findItem(R.id.action_upload).setVisible(App.talkIds.size() > 0);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -100,14 +123,14 @@ public class MainActivity extends ActionBarActivity {
                         @Override
                         public void success(CreateTalkPreferencesSuccessResponse postSuccessResponse, Response response) {
                             getPrefs().edit().putString("uuid", postSuccessResponse.getUid()).commit();
-                            Toast.makeText(MainActivity.this,"Yay initial upload done!-)",Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, "Yay initial upload done!-)", Toast.LENGTH_LONG).show();
                         }
                     });
                 } else {
-                    ApiModule.getTalkPreferencesService().updateTalkPreferences(uuidOrNull, App.talkIds, new DefaultRetrofitCallback<UpdateTalkPreferencesSuccessResponse>(false,this) {
+                    ApiModule.getTalkPreferencesService().updateTalkPreferences(uuidOrNull, App.talkIds, new DefaultRetrofitCallback<UpdateTalkPreferencesSuccessResponse>(false, this) {
                         @Override
                         public void success(UpdateTalkPreferencesSuccessResponse updateTalkPreferencesSuccessResponse, Response response) {
-                            Toast.makeText(MainActivity.this,"Yay list update done!-)",Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, "Yay list update done!-)", Toast.LENGTH_LONG).show();
                         }
 
                     });

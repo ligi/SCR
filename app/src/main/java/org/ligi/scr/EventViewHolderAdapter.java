@@ -26,22 +26,16 @@ class EventViewHolderAdapter extends RecyclerView.Adapter<EventViewHolder> {
 
     @Override
     public void onBindViewHolder(EventViewHolder holder, int position) {
-        holder.apply(talkResponses.get(position));
+        if (position==0 || position == talkResponses.size()+1) {
+            holder.applyAO();
+        } else {
+            holder.apply(talkResponses.get(position - 1));
+        }
     }
 
     @Override
     public int getItemCount() {
-        return talkResponses.size();
+        return talkResponses.size()+2;
     }
 
-
-    public GetTalksResponse findById(int id) {
-        for (GetTalksResponse talkResponse : talkResponses) {
-            if (talkResponse.getEventId() == id) {
-                return talkResponse;
-            }
-        }
-
-        return null;
-    }
 }

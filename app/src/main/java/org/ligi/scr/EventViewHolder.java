@@ -1,11 +1,14 @@
 package org.ligi.scr;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Collection;
@@ -35,6 +38,12 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
     @InjectView(R.id.shareView)
     View shareView;
 
+    @InjectView(R.id.mainContainer)
+    ViewGroup mainContainer;
+
+    @InjectView(R.id.fullImage)
+    ImageView fullImage;
+
     private CardView root;
 
     public EventViewHolder(CardView itemView) {
@@ -43,7 +52,17 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
         this.root = itemView;
     }
 
+    public void applyAO() {
+        mainContainer.setVisibility(View.GONE);
+        fullImage.setVisibility(View.VISIBLE);
+
+        fullImage.setImageResource(R.drawable.main_visual);
+    }
+
     public void apply(final GetTalksResponse response) {
+        mainContainer.setVisibility(View.VISIBLE);
+        fullImage.setVisibility(View.GONE);
+
         titleText.setText(response.getTitle());
         abstractText.setText(response.getAbstract());
         speakerText.setText(response.getSpeakers());
