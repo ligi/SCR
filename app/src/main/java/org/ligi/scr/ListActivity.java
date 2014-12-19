@@ -38,7 +38,7 @@ public class ListActivity extends ActionBarActivity {
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        //getSupportActionBar().setIcon(R.drawable.logo);
+        getSupportActionBar().setIcon(R.drawable.logo);
 
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setCustomView(new DaySelector(this));
@@ -47,16 +47,19 @@ public class ListActivity extends ActionBarActivity {
         ButterKnife.inject(this);
 
 
-        DateTime earliest_start = DateTime.parse(App.conference.days.get(0).date);
+        DateTime earliest_start = DateTime.parse(App.conference.days.get(0).date).plusDays(1);
 
         for (Day day : App.conference.days) {
-            if (DateTime.parse(day.date).isBefore(earliest_start)) {
-                earliest_start = DateTime.parse(day.date);
+            for (ArrayList<Event> events : day.rooms.values()) {
+                for (Event event : events) {
+                    if (new DateTime(event.date).isBefore(earliest_start)) {
+                        earliest_start = DateTime.parse(event.date);
+                    }
+                }
             }
         }
 
         final HashMap<String, ArrayList<Event>> roomToAllEvents = new HashMap<>();
-
 
         final Set<String> rooms = App.conference.days.get(0).rooms.keySet();
         for (String room : rooms) {
