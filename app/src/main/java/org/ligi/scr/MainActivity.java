@@ -1,8 +1,6 @@
 package org.ligi.scr;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,7 +13,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
@@ -45,6 +42,10 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        getSupportActionBar().setIcon(R.drawable.logo);
 
         getSupportActionBar().setSubtitle("Schedule Conflict Resolver");
         ButterKnife.inject(this);

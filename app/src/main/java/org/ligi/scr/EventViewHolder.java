@@ -8,8 +8,14 @@ import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.joda.time.format.DateTimeFormat;
+import org.ligi.axt.AXT;
+import org.ligi.scr.model.Event;
+import org.ligi.scr.model.decorated.EventDecorator;
 
 import java.util.Collection;
 
@@ -57,7 +63,31 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
         fullImage.setVisibility(View.VISIBLE);
 
         fullImage.setImageResource(R.drawable.main_visual);
+
+        fullImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AXT.at(v.getContext()).startCommonIntent().activityFromClass(ListActivity.class);
+            }
+        });
     }
+
+    public void apply(final Event response) {
+        mainContainer.setVisibility(View.VISIBLE);
+        fullImage.setVisibility(View.GONE);
+
+        final EventDecorator eventDecorator = new EventDecorator(response);
+
+        titleText.setText(response.title + response.room);
+        speakerText.setText(""+response.duration);
+        abstractText.setText(eventDecorator.getStart().toString(DateTimeFormat.shortTime()) + " " + eventDecorator.getEnd().toString(DateTimeFormat.shortTime()) + " " +response.abstractText  );
+
+        final long main = 5 * eventDecorator.getDuration().getStandardMinutes();
+
+        root.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (main)));
+        root.requestLayout();
+    }
+
 
     public void apply(final GetTalksResponse response) {
         mainContainer.setVisibility(View.VISIBLE);

@@ -19,7 +19,12 @@ public class HelpActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
 
-        getSupportActionBar().setSubtitle("Help");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        getSupportActionBar().setIcon(R.drawable.logo);
+
+        getSupportActionBar().setTitle("Help");
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ButterKnife.inject(this);
 

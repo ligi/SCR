@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion "21.1.1"
+    buildToolsVersion "21.1.2"
 
     defaultConfig {
         applicationId "org.ligi.scr"
@@ -33,9 +33,9 @@ android {
 
 dependencies {
 
-    compile 'com.android.support:support-v4:21.0.2'
+    compile 'com.android.support:support-v4:21.0.3'
     compile 'com.android.support:recyclerview-v7:21.0.0'
-    compile 'com.android.support:appcompat-v7:21.0.2'
+    compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.android.support:cardview-v7:21.0.0'
 
     compile 'com.jakewharton:butterknife:6.0.0'
@@ -47,11 +47,11 @@ dependencies {
     compile 'com.google.guava:guava:18.0'
 
     compile 'org.ligi:AXT:0.31'
-    compile 'org.ligi:tracedroid:1.2'
+    compile 'org.ligi:tracedroid:1.4'
 
     compile 'com.squareup.okhttp:okhttp:2.1.0'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.1.0'
 
-    compile 'joda-time:joda-time:2.5'
+    compile 'joda-time:joda-time:2.6'
 
 }
