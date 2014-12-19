@@ -1,22 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:id="@+id/list_host"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/trackRecycler1"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-         />
-
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/trackRecycler2"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        />
-
-</LinearLayout>

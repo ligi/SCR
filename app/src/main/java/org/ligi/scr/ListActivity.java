@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ViewGroup;
 
 import com.google.common.collect.Iterables;
 
@@ -15,20 +16,18 @@ import org.ligi.scr.model.decorated.EventDecorator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class ListActivity extends ActionBarActivity {
 
-    @InjectView(R.id.trackRecycler1)
-    RecyclerView trackRecycler1;
+    @InjectView(R.id.list_host)
+    ViewGroup list_host;
 
-
-    @InjectView(R.id.trackRecycler2)
-    RecyclerView trackRecycler2;
-
-    private EventViewHolderAdapter adapter;
+    private List<RecyclerView> recyclers=new ArrayList<RecyclerView>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +47,6 @@ public class ListActivity extends ActionBarActivity {
         ButterKnife.inject(this);
 
 
-        final GridLayoutManager layoutManager1 = new GridLayoutManager(this, 1);
-        trackRecycler1.setLayoutManager(layoutManager1);
-        final GridLayoutManager layoutManager2 = new GridLayoutManager(this, 1);
-        trackRecycler2.setLayoutManager(layoutManager2);
-
         DateTime earliest_start = DateTime.parse(App.conference.days.get(0).date);
 
         for (Day day : App.conference.days) {
@@ -61,11 +55,11 @@ public class ListActivity extends ActionBarActivity {
             }
         }
 
-        HashMap<String, ArrayList<Event>> roomToAllEvents = new HashMap<>();
+        final HashMap<String, ArrayList<Event>> roomToAllEvents = new HashMap<>();
 
 
-
-        for (String room : App.conference.days.get(0).rooms.keySet()) {
+        final Set<String> rooms = App.conference.days.get(0).rooms.keySet();
+        for (String room : rooms) {
             DateTime act_time = earliest_start;
             final ArrayList<Event> newEventList = new ArrayList<>();
             for (Day day : App.conference.days) {
@@ -91,10 +85,34 @@ public class ListActivity extends ActionBarActivity {
             roomToAllEvents.put(room, newEventList);
         }
 
-        trackRecycler1.setAdapter((new EventAdapter(Iterables.get(roomToAllEvents.values(), 0))));
-        trackRecycler2.setAdapter((new EventAdapter(Iterables.get(roomToAllEvents.values(), 1))));
 
-        linkRecyclers(trackRecycler1, trackRecycler2);
+        recyclers.clear();
+        for (int i=0;i<rooms.size() ;i++) {
+            final GridLayoutManager layoutManager1 = new GridLayoutManager(this, 1);
+            RecyclerView recycler = (RecyclerView) getLayoutInflater().inflate(R.layout.recycler,list_host,false);
+            recycler.setLayoutManager(layoutManager1);
+            recycler.setAdapter((new EventAdapter(Iterables.get(roomToAllEvents.values(), i))));
+
+            recyclers.add(recycler);
+            recycler.setOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    if (recyclerView.getTag(R.id.tag_scroll_sync) != null) {
+                        return;
+                    }
+
+                    for (RecyclerView recyclerView1 : recyclers) {
+                        if (!recyclerView1.equals(recyclerView)) {
+                            recyclerView1.setTag(R.id.tag_scroll_sync, true);
+                            recyclerView1.scrollBy(dx, dy);
+                            recyclerView1.setTag(R.id.tag_scroll_sync, null);
+                        }
+                    }
+                }
+            });
+            list_host.addView(recycler);
+        }
+
     }
 
     private void linkRecyclers(final RecyclerView... recyclerViews) {
@@ -118,6 +136,4 @@ public class ListActivity extends ActionBarActivity {
             });
         }
     }
-
-    // one recycler per day is the solution
 }
