@@ -27,7 +27,7 @@ public class ListActivity extends ActionBarActivity {
     @InjectView(R.id.list_host)
     ViewGroup list_host;
 
-    private List<RecyclerView> recyclers=new ArrayList<RecyclerView>();
+    private List<RecyclerView> recyclers = new ArrayList<RecyclerView>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +47,18 @@ public class ListActivity extends ActionBarActivity {
         ButterKnife.inject(this);
 
 
-        DateTime earliest_start = DateTime.parse(App.conference.days.get(0).date).plusDays(1);
+        DateTime earliestEventTime = DateTime.parse(App.conference.days.get(0).date).plusDays(1);
+        DateTime latestEventTime = DateTime.parse(App.conference.days.get(0).date);
 
         for (Day day : App.conference.days) {
             for (ArrayList<Event> events : day.rooms.values()) {
                 for (Event event : events) {
-                    if (new DateTime(event.date).isBefore(earliest_start)) {
-                        earliest_start = DateTime.parse(event.date);
+                    final DateTime dateTime = new DateTime(event.date);
+                    if (dateTime.isBefore(earliestEventTime)) {
+                        earliestEventTime = dateTime;
+                    }
+                    if (dateTime.isAfter(latestEventTime)) {
+                        latestEventTime = dateTime;
                     }
                 }
             }
@@ -63,7 +68,7 @@ public class ListActivity extends ActionBarActivity {
 
         final Set<String> rooms = App.conference.days.get(0).rooms.keySet();
         for (String room : rooms) {
-            DateTime act_time = earliest_start;
+            DateTime act_time = earliestEventTime;
             final ArrayList<Event> newEventList = new ArrayList<>();
             for (Day day : App.conference.days) {
 
@@ -71,28 +76,35 @@ public class ListActivity extends ActionBarActivity {
                     final EventDecorator eventDecorator = new EventDecorator(event);
 
                     if (act_time.isBefore(eventDecorator.getStart())) {
-                        final Event object = new Event();
-                        object.title = "break";
+                        final Event breakEvent = new Event();
+                        breakEvent.title = "break";
+                        breakEvent.date = act_time.toString(ISODateTimeFormat.dateTime());
 
-                        object.date = act_time.toString(ISODateTimeFormat.dateTime());
-
-                        final EventDecorator eventDecorator1 = new EventDecorator(object);
+                        final EventDecorator eventDecorator1 = new EventDecorator(breakEvent);
 
                         eventDecorator1.setEnd(eventDecorator.getStart());
-                        newEventList.add(object);
+                        newEventList.add(breakEvent);
                     }
                     act_time = eventDecorator.getEnd();
                     newEventList.add(event);
                 }
+            }
+
+            if (DateTime.parse(Iterables.getLast(newEventList).date).isBefore(latestEventTime)) {
+                final Event event = new Event();
+                event.title = "end";
+                event.date = DateTime.parse(Iterables.getLast(newEventList).date).toString(ISODateTimeFormat.dateTime());
+                new EventDecorator(event).setEnd(latestEventTime);
+                newEventList.add(event);
             }
             roomToAllEvents.put(room, newEventList);
         }
 
 
         recyclers.clear();
-        for (int i=0;i<rooms.size() ;i++) {
+        for (int i = 0; i < rooms.size(); i++) {
             final GridLayoutManager layoutManager1 = new GridLayoutManager(this, 1);
-            RecyclerView recycler = (RecyclerView) getLayoutInflater().inflate(R.layout.recycler,list_host,false);
+            RecyclerView recycler = (RecyclerView) getLayoutInflater().inflate(R.layout.recycler, list_host, false);
             recycler.setLayoutManager(layoutManager1);
             recycler.setAdapter((new EventAdapter(Iterables.get(roomToAllEvents.values(), i))));
 
@@ -107,7 +119,7 @@ public class ListActivity extends ActionBarActivity {
                     for (RecyclerView recyclerView1 : recyclers) {
                         if (!recyclerView1.equals(recyclerView)) {
                             recyclerView1.setTag(R.id.tag_scroll_sync, true);
-                            recyclerView1.scrollBy(dx, dy);
+                            recyclerView1.scrollBy(dx,dy);
                             recyclerView1.setTag(R.id.tag_scroll_sync, null);
                         }
                     }
@@ -118,25 +130,4 @@ public class ListActivity extends ActionBarActivity {
 
     }
 
-    private void linkRecyclers(final RecyclerView... recyclerViews) {
-
-        for (RecyclerView recyclerView : recyclerViews) {
-            recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-                @Override
-                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                    if (recyclerView.getTag(R.id.tag_scroll_sync) != null) {
-                        return;
-                    }
-
-                    for (RecyclerView recyclerView1 : recyclerViews) {
-                        if (!recyclerView1.equals(recyclerView)) {
-                            recyclerView1.setTag(R.id.tag_scroll_sync, true);
-                            recyclerView1.scrollBy(dx, dy);
-                            recyclerView1.setTag(R.id.tag_scroll_sync, null);
-                        }
-                    }
-                }
-            });
-        }
-    }
 }
