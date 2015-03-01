@@ -29,6 +29,11 @@ android {
         pickFirst 'META-INF/NOTICE'
         pickFirst 'META-INF/NOTICE.txt'
     }
+
+    lintOptions {
+        // from okhttp
+        disable "InvalidPackage"
+    }
 }
 
 dependencies {
