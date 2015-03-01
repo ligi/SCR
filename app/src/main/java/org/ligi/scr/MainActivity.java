@@ -147,7 +147,7 @@ public class MainActivity extends ActionBarActivity {
 
     @Subscribe
     public void onEvent(TalkIdsChangeEvent scopeChangeEvent) {
-        invalidateOptionsMenu();
+        supportInvalidateOptionsMenu();
     }
 
 }
