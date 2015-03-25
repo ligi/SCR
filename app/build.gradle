@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 22
+    buildToolsVersion "22"
 
     defaultConfig {
         applicationId "org.ligi.scr"
         minSdkVersion 8
-        targetSdkVersion 21
+        targetSdkVersion 22
         versionCode 5
         versionName "0.5"
     }
@@ -38,12 +38,12 @@ android {
 
 dependencies {
 
-    compile 'com.android.support:support-v4:21.0.3'
-    compile 'com.android.support:recyclerview-v7:21.0.3'
-    compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'com.android.support:cardview-v7:21.0.3'
+    compile 'com.android.support:support-v4:22.0.0'
+    compile 'com.android.support:recyclerview-v7:22.0.0'
+    compile 'com.android.support:appcompat-v7:22.0.0'
+    compile 'com.android.support:cardview-v7:22.0.0'
 
-    compile 'com.jakewharton:butterknife:6.0.0'
+    compile 'com.jakewharton:butterknife:6.1.0'
 
     compile 'info.metadude.java.library.halfnarp:halfnarp-client:1.0.7'
 
@@ -54,7 +54,7 @@ dependencies {
     compile 'org.ligi:AXT:0.31'
     compile 'org.ligi:tracedroid:1.4'
 
-    compile 'com.squareup.okhttp:okhttp:2.1.0'
+    compile 'com.squareup.okhttp:okhttp:2.2.0'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.1.0'
 
     compile 'joda-time:joda-time:2.6'
