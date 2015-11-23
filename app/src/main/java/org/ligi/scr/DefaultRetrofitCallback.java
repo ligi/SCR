@@ -7,7 +7,6 @@ import org.ligi.axt.listeners.ActivityFinishingOnClickListener;
 import org.ligi.axt.listeners.DialogDiscardingOnClickListener;
 
 import retrofit.Callback;
-import retrofit.RetrofitError;
 
 abstract class DefaultRetrofitCallback<T> implements Callback<T> {
 
@@ -20,7 +19,7 @@ abstract class DefaultRetrofitCallback<T> implements Callback<T> {
     }
 
     @Override
-    public void failure(RetrofitError error) {
+    public void onFailure(Throwable error) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle(android.R.string.dialog_alert_title);
         builder.setMessage(error.getMessage());

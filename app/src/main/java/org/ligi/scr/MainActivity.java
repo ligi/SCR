@@ -28,7 +28,8 @@ import info.metadude.java.library.halfnarp.TalkPreferencesService;
 import info.metadude.java.library.halfnarp.model.CreateTalkPreferencesSuccessResponse;
 import info.metadude.java.library.halfnarp.model.GetTalksResponse;
 import info.metadude.java.library.halfnarp.model.UpdateTalkPreferencesSuccessResponse;
-import retrofit.client.Response;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -89,10 +90,10 @@ public class MainActivity extends ActionBarActivity {
 
     private void loadData() {
         final TalkPreferencesService service = ApiModule.getTalkPreferencesService();
-        service.getTalks(new DefaultRetrofitCallback<List<GetTalksResponse>>(true, this) {
+        service.getTalks().enqueue(new DefaultRetrofitCallback<List<GetTalksResponse>>(true, this) {
             @Override
-            public void success(List<GetTalksResponse> getTalksResponses, Response response) {
-                adapter = new EventViewHolderAdapter(getTalksResponses);
+            public void onResponse(Response<List<GetTalksResponse>> response, Retrofit retrofit) {
+                adapter = new EventViewHolderAdapter(response.body());
                 trackRecycler.setAdapter(adapter);
             }
         });
@@ -120,17 +121,17 @@ public class MainActivity extends ActionBarActivity {
             case R.id.action_upload:
                 final String uuidOrNull = getPrefs().getString("uuid", null);
                 if (uuidOrNull == null) {
-                    ApiModule.getTalkPreferencesService().createTalkPreferences(App.talkIds, new DefaultRetrofitCallback<CreateTalkPreferencesSuccessResponse>(false, this) {
+                    ApiModule.getTalkPreferencesService().createTalkPreferences(App.talkIds).enqueue(new DefaultRetrofitCallback<CreateTalkPreferencesSuccessResponse>(false, this) {
                         @Override
-                        public void success(CreateTalkPreferencesSuccessResponse postSuccessResponse, Response response) {
-                            getPrefs().edit().putString("uuid", postSuccessResponse.getUid()).commit();
+                        public void onResponse(Response<CreateTalkPreferencesSuccessResponse> response, Retrofit retrofit) {
+                            getPrefs().edit().putString("uuid", response.body().getUid()).commit();
                             Toast.makeText(MainActivity.this, "Yay initial upload done!-)", Toast.LENGTH_LONG).show();
                         }
                     });
                 } else {
-                    ApiModule.getTalkPreferencesService().updateTalkPreferences(uuidOrNull, App.talkIds, new DefaultRetrofitCallback<UpdateTalkPreferencesSuccessResponse>(false, this) {
+                    ApiModule.getTalkPreferencesService().updateTalkPreferences(uuidOrNull, App.talkIds).enqueue(new DefaultRetrofitCallback<UpdateTalkPreferencesSuccessResponse>(false, this) {
                         @Override
-                        public void success(UpdateTalkPreferencesSuccessResponse updateTalkPreferencesSuccessResponse, Response response) {
+                        public void onResponse(Response<UpdateTalkPreferencesSuccessResponse> updateTalkPreferencesSuccessResponse, Retrofit retrofit) {
                             Toast.makeText(MainActivity.this, "Yay list update done!-)", Toast.LENGTH_LONG).show();
                         }
 
