@@ -19,42 +19,41 @@ import org.ligi.scr.model.decorated.EventDecorator;
 
 import java.util.Collection;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.OnClick;
 import info.metadude.java.library.halfnarp.model.GetTalksResponse;
 
 public class EventViewHolder extends RecyclerView.ViewHolder {
 
-    @InjectView(R.id.titleTV)
+    @Bind(R.id.titleTV)
     TextView titleText;
 
-    @InjectView(R.id.abstractTV)
+    @Bind(R.id.abstractTV)
     TextView abstractText;
 
-    @InjectView(R.id.speaker)
+    @Bind(R.id.speaker)
     TextView speakerText;
 
-    @InjectView(R.id.track)
+    @Bind(R.id.track)
     TextView trackText;
 
-    @InjectView(R.id.talkSwitch)
+    @Bind(R.id.talkSwitch)
     SwitchCompat talkSwitch;
 
-    @InjectView(R.id.shareView)
+    @Bind(R.id.shareView)
     View shareView;
 
-    @InjectView(R.id.mainContainer)
+    @Bind(R.id.mainContainer)
     ViewGroup mainContainer;
 
-    @InjectView(R.id.fullImage)
+    @Bind(R.id.fullImage)
     ImageView fullImage;
 
     private CardView root;
 
     public EventViewHolder(CardView itemView) {
         super(itemView);
-        ButterKnife.inject(this, itemView);
+        ButterKnife.bind(this, itemView);
         this.root = itemView;
     }
 

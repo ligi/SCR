@@ -21,8 +21,8 @@ import org.ligi.axt.AXT;
 
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import info.metadude.java.library.halfnarp.ApiModule;
 import info.metadude.java.library.halfnarp.TalkPreferencesService;
 import info.metadude.java.library.halfnarp.model.CreateTalkPreferencesSuccessResponse;
@@ -33,7 +33,7 @@ import retrofit.Retrofit;
 
 public class MainActivity extends ActionBarActivity {
 
-    @InjectView(R.id.trackRecycler)
+    @Bind(R.id.trackRecycler)
     RecyclerView trackRecycler;
 
     private EventViewHolderAdapter adapter;
@@ -49,7 +49,7 @@ public class MainActivity extends ActionBarActivity {
         getSupportActionBar().setIcon(R.drawable.logo);
 
         getSupportActionBar().setSubtitle("Schedule Conflict Resolver");
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
 
         final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(getResources().getInteger(R.integer.rows), OrientationHelper.VERTICAL);

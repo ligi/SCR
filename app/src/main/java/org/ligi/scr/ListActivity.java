@@ -20,11 +20,11 @@ import java.util.List;
 import java.util.Set;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 
 public class ListActivity extends ActionBarActivity {
 
-    @InjectView(R.id.list_host)
+    @Bind(R.id.list_host)
     ViewGroup list_host;
 
     private List<RecyclerView> recyclers = new ArrayList<RecyclerView>();
@@ -32,7 +32,6 @@ public class ListActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         setContentView(R.layout.activity_list);
 
@@ -44,8 +43,7 @@ public class ListActivity extends ActionBarActivity {
         getSupportActionBar().setCustomView(new DaySelector(this));
 
         getSupportActionBar().setSubtitle("Schedule Conflict Resolver");
-        ButterKnife.inject(this);
-
+        ButterKnife.bind(this);
 
         DateTime earliestEventTime = DateTime.parse(App.conference.days.get(0).date).plusDays(1);
         DateTime latestEventTime = DateTime.parse(App.conference.days.get(0).date);
