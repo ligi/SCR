@@ -2,10 +2,6 @@ package org.ligi.scr.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.apache.http.client.utils.CloneUtils;
-import org.joda.time.Duration;
-
-import java.util.HashMap;
 import java.util.List;
 
 
