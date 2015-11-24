@@ -5,9 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.google.common.collect.Iterables;
-
-import org.ligi.scr.model.Day;
 import org.ligi.scr.model.Event;
 
 import java.util.ArrayList;
