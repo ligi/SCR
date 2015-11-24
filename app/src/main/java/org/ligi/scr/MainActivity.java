@@ -7,7 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -31,7 +31,7 @@ import info.metadude.java.library.halfnarp.model.UpdateTalkPreferencesSuccessRes
 import retrofit.Response;
 import retrofit.Retrofit;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     @Bind(R.id.trackRecycler)
     RecyclerView trackRecycler;

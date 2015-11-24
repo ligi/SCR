@@ -1,7 +1,7 @@
 package org.ligi.scr;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class HelpActivity extends ActionBarActivity {
+public class HelpActivity extends AppCompatActivity {
 
     @Bind(R.id.helpText)
     TextView helpText;

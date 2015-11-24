@@ -1,7 +1,7 @@
 package org.ligi.scr;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
@@ -19,10 +19,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import butterknife.ButterKnife;
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
-public class ListActivity extends ActionBarActivity {
+public class ListActivity extends AppCompatActivity {
 
     @Bind(R.id.list_host)
     ViewGroup list_host;
@@ -117,7 +117,7 @@ public class ListActivity extends ActionBarActivity {
                     for (RecyclerView recyclerView1 : recyclers) {
                         if (!recyclerView1.equals(recyclerView)) {
                             recyclerView1.setTag(R.id.tag_scroll_sync, true);
-                            recyclerView1.scrollBy(dx,dy);
+                            recyclerView1.scrollBy(dx, dy);
                             recyclerView1.setTag(R.id.tag_scroll_sync, null);
                         }
                     }
