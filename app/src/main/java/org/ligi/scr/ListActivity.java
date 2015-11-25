@@ -27,7 +27,7 @@ public class ListActivity extends AppCompatActivity {
     @Bind(R.id.list_host)
     ViewGroup list_host;
 
-    private List<RecyclerView> recyclers = new ArrayList<RecyclerView>();
+    private List<RecyclerView> recyclers = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
