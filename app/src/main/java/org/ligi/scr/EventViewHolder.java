@@ -1,7 +1,6 @@
 package org.ligi.scr;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
@@ -17,7 +16,8 @@ import org.ligi.axt.AXT;
 import org.ligi.scr.model.Event;
 import org.ligi.scr.model.decorated.EventDecorator;
 
-import java.util.Collection;
+import java.util.Set;
+import java.util.TreeSet;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -78,8 +78,8 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
         final EventDecorator eventDecorator = new EventDecorator(response);
 
         titleText.setText(response.title + response.room);
-        speakerText.setText(""+response.duration);
-        abstractText.setText(eventDecorator.getStart().toString(DateTimeFormat.shortTime()) + " " + eventDecorator.getEnd().toString(DateTimeFormat.shortTime()) + " " +response.abstractText  );
+        speakerText.setText("" + response.duration);
+        abstractText.setText(eventDecorator.getStart().toString(DateTimeFormat.shortTime()) + " " + eventDecorator.getEnd().toString(DateTimeFormat.shortTime()) + " " + response.abstractText);
 
         final long main = 5 * eventDecorator.getDuration().getStandardMinutes();
 
@@ -97,10 +97,14 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
         speakerText.setText(response.getSpeakers());
         trackText.setText(response.getTrackName());
 
+        talkSwitch.setOnCheckedChangeListener(null);
+
+        talkSwitch.setChecked(App.talkIds.getTalkIds().contains(response.getEventId()));
+
         talkSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                final Collection<Integer> talkIds = App.talkIds.getTalkIds();
+                final Set<Integer> talkIds = new TreeSet<>(App.talkIds.getTalkIds());
                 if (isChecked) {
                     talkIds.add(response.getEventId());
                 } else {
@@ -113,13 +117,12 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
             }
         });
 
-        talkSwitch.setChecked(App.talkIds.getTalkIds().contains(response.getEventId()));
 
         shareView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.putExtra(Intent.EXTRA_SUBJECT,response.getTitle());
+                intent.putExtra(Intent.EXTRA_SUBJECT, response.getTitle());
                 intent.putExtra(Intent.EXTRA_TEXT, response.getAbstract());
                 intent.setType("text/plain");
                 root.getContext().startActivity(intent);
