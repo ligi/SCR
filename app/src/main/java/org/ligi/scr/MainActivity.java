@@ -8,6 +8,7 @@ import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.OrientationHelper;
@@ -37,6 +38,8 @@ import retrofit.Response;
 import retrofit.Retrofit;
 
 public class MainActivity extends AppCompatActivity {
+
+    final String KEY_LAST_POSITION = "last_scroll_position";
 
     @Bind(R.id.trackRecycler)
     RecyclerView trackRecycler;
@@ -70,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
                 }
-            },1500);
+            }, 1500);
 
         } else {
             final LoadToast loadToast = new LoadToast(this).setText("Uploading new selection").show();
@@ -92,9 +95,8 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
                 }
-            },1500);
+            }, 1500);
         }
-
 
 
     }
@@ -141,12 +143,18 @@ public class MainActivity extends AppCompatActivity {
 
         App.bus.register(this);
         App.talkIds.load();
+
+        trackRecycler.getLayoutManager().scrollToPosition(PreferenceManager.getDefaultSharedPreferences(this).getInt(KEY_LAST_POSITION, 0));
     }
 
     @Override
     protected void onPause() {
         App.bus.unregister(this);
         App.talkIds.save();
+
+        int lastFirstVisiblePosition = ((StaggeredGridLayoutManager) trackRecycler.getLayoutManager()).findFirstCompletelyVisibleItemPositions(null)[0];
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putInt(KEY_LAST_POSITION, lastFirstVisiblePosition).commit();
+
         super.onPause();
     }
 
