@@ -40,6 +40,7 @@ import retrofit.Retrofit;
 public class MainActivity extends AppCompatActivity {
 
     final String KEY_LAST_POSITION = "last_scroll_position";
+    final String KEY_LAST_UPDATE_SAVED = "last_update_saved";
 
     @Bind(R.id.trackRecycler)
     RecyclerView trackRecycler;
@@ -50,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.fab)
     void onFabClick() {
         final String uuidOrNull = getPrefs().getString("uuid", null);
-        fab.hide();
+
+        setStateSaved();
 
         if (uuidOrNull == null) {
 
@@ -69,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(Throwable t) {
                             loadToast.error();
-                            fab.show();
+                            setStateChanged();
                         }
                     });
                 }
@@ -91,14 +93,12 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(Throwable t) {
                             loadToast.error();
-                            fab.show();
+                            setStateChanged();
                         }
                     });
                 }
             }, 1500);
         }
-
-
     }
 
     private EventViewHolderAdapter adapter;
@@ -144,7 +144,17 @@ public class MainActivity extends AppCompatActivity {
         App.bus.register(this);
         App.talkIds.load();
 
-        trackRecycler.getLayoutManager().scrollToPosition(PreferenceManager.getDefaultSharedPreferences(this).getInt(KEY_LAST_POSITION, 0));
+        trackRecycler.getLayoutManager().scrollToPosition(getSharedPrefs().getInt(KEY_LAST_POSITION, 0));
+
+        if (getPrefs().getBoolean(KEY_LAST_UPDATE_SAVED,false)) {
+            fab.hide();
+        } else {
+            fab.show();
+        }
+    }
+
+    private SharedPreferences getSharedPrefs() {
+        return PreferenceManager.getDefaultSharedPreferences(this);
     }
 
     @Override
@@ -152,8 +162,8 @@ public class MainActivity extends AppCompatActivity {
         App.bus.unregister(this);
         App.talkIds.save();
 
-        int lastFirstVisiblePosition = ((StaggeredGridLayoutManager) trackRecycler.getLayoutManager()).findFirstCompletelyVisibleItemPositions(null)[0];
-        PreferenceManager.getDefaultSharedPreferences(this).edit().putInt(KEY_LAST_POSITION, lastFirstVisiblePosition).commit();
+        int lastFirstVisiblePosition = ((StaggeredGridLayoutManager) trackRecycler.getLayoutManager()).findFirstVisibleItemPositions(null)[0];
+        getSharedPrefs().edit().putInt(KEY_LAST_POSITION, lastFirstVisiblePosition).commit();
 
         super.onPause();
     }
@@ -192,7 +202,19 @@ public class MainActivity extends AppCompatActivity {
 
     @Subscribe
     public void onEvent(TalkIdsChangeEvent scopeChangeEvent) {
-        fab.show();
+        setStateChanged();
     }
+
+    private void setStateChanged() {
+        fab.show();
+        getPrefs().edit().putBoolean(KEY_LAST_UPDATE_SAVED,false).commit();
+    }
+
+
+    private void setStateSaved() {
+        fab.hide();
+        getPrefs().edit().putBoolean(KEY_LAST_UPDATE_SAVED,true).commit();
+    }
+
 
 }
