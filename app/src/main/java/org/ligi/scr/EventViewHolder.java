@@ -43,12 +43,6 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
     @Bind(R.id.shareView)
     View shareView;
 
-    @Bind(R.id.mainContainer)
-    ViewGroup mainContainer;
-
-    @Bind(R.id.fullImage)
-    ImageView fullImage;
-
     private CardView root;
 
     public EventViewHolder(CardView itemView) {
@@ -57,25 +51,7 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
         this.root = itemView;
     }
 
-    public void applyAO() {
-        mainContainer.setVisibility(View.GONE);
-        fullImage.setVisibility(View.VISIBLE);
-
-        fullImage.setImageResource(R.drawable.main_visual);
-
-        fullImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (BuildConfig.DEBUG) {
-                    AXT.at(v.getContext()).startCommonIntent().activityFromClass(ListActivity.class);
-                }
-            }
-        });
-    }
-
     public void apply(final Event response) {
-        mainContainer.setVisibility(View.VISIBLE);
-        fullImage.setVisibility(View.GONE);
 
         final EventDecorator eventDecorator = new EventDecorator(response);
 
@@ -91,8 +67,6 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
 
 
     public void apply(final GetTalksResponse response) {
-        mainContainer.setVisibility(View.VISIBLE);
-        fullImage.setVisibility(View.GONE);
 
         titleText.setText(response.getTitle());
         abstractText.setText(response.getAbstract());
