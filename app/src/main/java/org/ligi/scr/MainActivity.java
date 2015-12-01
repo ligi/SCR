@@ -7,15 +7,18 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
+
+import net.steamcrafted.loadtoast.LoadToast;
 
 import org.ligi.axt.AXT;
 
@@ -23,11 +26,13 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import info.metadude.java.library.halfnarp.ApiModule;
 import info.metadude.java.library.halfnarp.TalkPreferencesService;
 import info.metadude.java.library.halfnarp.model.CreateTalkPreferencesSuccessResponse;
 import info.metadude.java.library.halfnarp.model.GetTalksResponse;
 import info.metadude.java.library.halfnarp.model.UpdateTalkPreferencesSuccessResponse;
+import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
@@ -35,6 +40,64 @@ public class MainActivity extends AppCompatActivity {
 
     @Bind(R.id.trackRecycler)
     RecyclerView trackRecycler;
+
+    @Bind(R.id.fab)
+    FloatingActionButton fab;
+
+    @OnClick(R.id.fab)
+    void onFabClick() {
+        final String uuidOrNull = getPrefs().getString("uuid", null);
+        fab.hide();
+
+        if (uuidOrNull == null) {
+
+            final LoadToast loadToast = new LoadToast(this).setText("Initial upload").show();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ApiModule.getTalkPreferencesService().createTalkPreferences(App.talkIds).enqueue(new Callback<CreateTalkPreferencesSuccessResponse>() {
+                        @Override
+                        public void onResponse(Response<CreateTalkPreferencesSuccessResponse> response, Retrofit retrofit) {
+                            getPrefs().edit().putString("uuid", response.body().getUid()).commit();
+                            loadToast.success();
+                        }
+
+                        @Override
+                        public void onFailure(Throwable t) {
+                            loadToast.error();
+                            fab.show();
+                        }
+                    });
+                }
+            },1500);
+
+        } else {
+            final LoadToast loadToast = new LoadToast(this).setText("Uploading new selection").show();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    ApiModule.getTalkPreferencesService().updateTalkPreferences(uuidOrNull, App.talkIds).enqueue(new Callback<UpdateTalkPreferencesSuccessResponse>() {
+                        @Override
+                        public void onResponse(Response<UpdateTalkPreferencesSuccessResponse> updateTalkPreferencesSuccessResponse, Retrofit retrofit) {
+                            loadToast.success();
+                        }
+
+                        @Override
+                        public void onFailure(Throwable t) {
+                            loadToast.error();
+                            fab.show();
+                        }
+                    });
+                }
+            },1500);
+        }
+
+
+
+    }
 
     private EventViewHolderAdapter adapter;
 
@@ -106,37 +169,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.action_upload).setVisible(App.talkIds.size() > 0);
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_help:
                 AXT.at(this).startCommonIntent().activityFromClass(HelpActivity.class);
-                break;
-
-            case R.id.action_upload:
-                final String uuidOrNull = getPrefs().getString("uuid", null);
-                if (uuidOrNull == null) {
-                    ApiModule.getTalkPreferencesService().createTalkPreferences(App.talkIds).enqueue(new DefaultRetrofitCallback<CreateTalkPreferencesSuccessResponse>(false, this) {
-                        @Override
-                        public void onResponse(Response<CreateTalkPreferencesSuccessResponse> response, Retrofit retrofit) {
-                            getPrefs().edit().putString("uuid", response.body().getUid()).commit();
-                            Toast.makeText(MainActivity.this, "Yay initial upload done!-)", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                } else {
-                    ApiModule.getTalkPreferencesService().updateTalkPreferences(uuidOrNull, App.talkIds).enqueue(new DefaultRetrofitCallback<UpdateTalkPreferencesSuccessResponse>(false, this) {
-                        @Override
-                        public void onResponse(Response<UpdateTalkPreferencesSuccessResponse> updateTalkPreferencesSuccessResponse, Retrofit retrofit) {
-                            Toast.makeText(MainActivity.this, "Yay list update done!-)", Toast.LENGTH_LONG).show();
-                        }
-
-                    });
-                }
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -148,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Subscribe
     public void onEvent(TalkIdsChangeEvent scopeChangeEvent) {
-        supportInvalidateOptionsMenu();
+        fab.show();
     }
 
 }
