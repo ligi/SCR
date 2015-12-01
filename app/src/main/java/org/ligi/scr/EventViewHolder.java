@@ -66,7 +66,9 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
         fullImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AXT.at(v.getContext()).startCommonIntent().activityFromClass(ListActivity.class);
+                if (BuildConfig.DEBUG) {
+                    AXT.at(v.getContext()).startCommonIntent().activityFromClass(ListActivity.class);
+                }
             }
         });
     }
