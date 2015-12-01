@@ -9,8 +9,8 @@ android {
         applicationId "org.ligi.scr"
         minSdkVersion 9
         targetSdkVersion 22
-        versionCode 5
-        versionName "0.5"
+        versionCode 6
+        versionName "0.6"
     }
 
     buildTypes {
