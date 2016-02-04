@@ -36,7 +36,7 @@ public class App extends Application {
                 final OkHttpClient client = new OkHttpClient();
 
                 Request request = new Request.Builder()
-                        .url("http://events.ccc.de/congress/2014/Fahrplan/schedule.json")
+                        .url("http://events.ccc.de/congress/2015/Fahrplan/schedule.json")
                         .build();
 
                 try {

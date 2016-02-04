@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import org.ligi.axt.AXT;
+
 import java.util.List;
 
 import info.metadude.java.library.halfnarp.model.GetTalksResponse;
@@ -63,6 +65,12 @@ class EventViewHolderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         public ImageViewHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AXT.at(v.getContext()).startCommonIntent().activityFromClass(ListActivity.class);
+                }
+            });
         }
     }
 }
