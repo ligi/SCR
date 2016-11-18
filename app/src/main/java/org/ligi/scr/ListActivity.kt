@@ -4,9 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.ViewGroup
-import butterknife.Bind
-import butterknife.ButterKnife
+import kotlinx.android.synthetic.main.activity_list.*
 import org.joda.time.DateTime
 import org.joda.time.format.ISODateTimeFormat
 import org.ligi.scr.model.Event
@@ -14,9 +12,6 @@ import org.ligi.scr.model.decorated.EventDecorator
 import java.util.*
 
 class ListActivity : AppCompatActivity() {
-
-    @Bind(R.id.list_host)
-    internal var list_host: ViewGroup? = null
 
     private val recyclers = ArrayList<RecyclerView>()
 
@@ -33,7 +28,6 @@ class ListActivity : AppCompatActivity() {
         supportActionBar?.customView = DaySelector(this)
 
         supportActionBar?.subtitle = "Schedule Conflict Resolver"
-        ButterKnife.bind(this)
 
         var earliestEventTime = DateTime.parse(App.conference.days[0].date).plusDays(1)
         var latestEventTime = DateTime.parse(App.conference.days[0].date)
