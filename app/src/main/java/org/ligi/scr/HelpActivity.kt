@@ -15,7 +15,6 @@ class HelpActivity : AppCompatActivity() {
 
         supportActionBar?.apply {
             setDisplayShowHomeEnabled(true)
-            setIcon(R.drawable.logo)
             title = "Help"
             setDisplayHomeAsUpEnabled(true)
         }

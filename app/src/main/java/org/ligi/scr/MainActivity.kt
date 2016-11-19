@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar?.apply {
             setDisplayShowHomeEnabled(true)
-            setIcon(R.drawable.logo)
+            subtitle = "33C3 Halfnarp"
             subtitle = "Schedule Conflict Resolver"
         }
 

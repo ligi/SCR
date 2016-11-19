@@ -22,8 +22,6 @@ class ListActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
-        supportActionBar?.setIcon(R.drawable.logo)
-
         supportActionBar?.setDisplayShowCustomEnabled(true)
         supportActionBar?.customView = DaySelector(this)
 

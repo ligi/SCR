@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_cloud_upload_white_36dp"
+        android:src="@drawable/ic_file_cloud_upload"
         />
 
 </android.support.design.widget.CoordinatorLayout>
