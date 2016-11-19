@@ -10,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.preference.PreferenceManager
+import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.OrientationHelper
 import android.support.v7.widget.StaggeredGridLayoutManager
@@ -39,11 +40,11 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
 
-        supportActionBar!!.setDisplayShowHomeEnabled(true)
-
-        supportActionBar!!.setIcon(R.drawable.logo)
-
-        supportActionBar!!.setSubtitle("Schedule Conflict Resolver")
+        supportActionBar?.apply {
+            setDisplayShowHomeEnabled(true)
+            setIcon(R.drawable.logo)
+            subtitle = "Schedule Conflict Resolver"
+        }
 
         fab.setOnClickListener {
             val uuidOrNull = prefs.getString("uuid", null)
@@ -87,7 +88,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val layoutManager = StaggeredGridLayoutManager(resources.getInteger(R.integer.rows), OrientationHelper.VERTICAL)
-        trackRecycler!!.layoutManager = layoutManager
+        trackRecycler.layoutManager = layoutManager
 
         loadData()
     }
@@ -97,12 +98,13 @@ class MainActivity : AppCompatActivity() {
 
         try {
             if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                trackRecycler!!.setBackgroundResource(R.drawable.bg_src)
+                trackRecycler.setBackgroundResource(R.drawable.bg_src)
             } else {
                 val matrix = Matrix()
                 matrix.postRotate(90f)
                 val source = BitmapFactory.decodeResource(resources, R.drawable.bg_src)
-                trackRecycler!!.setBackgroundDrawable(BitmapDrawable(resources, Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)))
+                val bitmap = Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
+                ViewCompat.setBackground(trackRecycler,BitmapDrawable(resources, bitmap))
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -112,12 +114,12 @@ class MainActivity : AppCompatActivity() {
         App.bus.register(this)
         App.talkIds.load()
 
-        trackRecycler!!.layoutManager.scrollToPosition(sharedPrefs.getInt(KEY_LAST_POSITION, 0))
+        trackRecycler.layoutManager.scrollToPosition(sharedPrefs.getInt(KEY_LAST_POSITION, 0))
 
         if (prefs.getBoolean(KEY_LAST_UPDATE_SAVED, false)) {
-            fab!!.hide()
+            fab.hide()
         } else {
-            fab!!.show()
+            fab.show()
         }
     }
 
@@ -128,8 +130,8 @@ class MainActivity : AppCompatActivity() {
         App.bus.unregister(this)
         App.talkIds.save()
 
-        val lastFirstVisiblePosition = (trackRecycler!!.layoutManager as StaggeredGridLayoutManager).findFirstVisibleItemPositions(null)[0]
-        sharedPrefs.edit().putInt(KEY_LAST_POSITION, lastFirstVisiblePosition).commit()
+        val lastFirstVisiblePosition = (trackRecycler.layoutManager as StaggeredGridLayoutManager).findFirstVisibleItemPositions(null)[0]
+        sharedPrefs.edit().putInt(KEY_LAST_POSITION, lastFirstVisiblePosition).apply()
 
         super.onPause()
     }
@@ -140,7 +142,7 @@ class MainActivity : AppCompatActivity() {
         service.talks.enqueue(object : DefaultRetrofitCallback<List<GetTalksResponse>>(true, this) {
             override fun onResponse(response: Response<List<GetTalksResponse>>, retrofit: Retrofit) {
                 adapter = EventViewHolderAdapter(response.body())
-                trackRecycler!!.adapter = adapter
+                trackRecycler.adapter = adapter
             }
         })
     }
@@ -166,15 +168,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setStateChanged() {
-        fab!!.show()
-        prefs.edit().putBoolean(KEY_LAST_UPDATE_SAVED, false).commit()
+        fab.show()
+        prefs.edit().putBoolean(KEY_LAST_UPDATE_SAVED, false).apply()
     }
-
 
     private fun setStateSaved() {
-        fab!!.hide()
-        prefs.edit().putBoolean(KEY_LAST_UPDATE_SAVED, true).commit()
+        fab.hide()
+        prefs.edit().putBoolean(KEY_LAST_UPDATE_SAVED, true).apply()
     }
-
-
 }

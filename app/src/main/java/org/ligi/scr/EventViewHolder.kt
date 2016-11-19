@@ -54,7 +54,7 @@ class EventViewHolder(private val root: CardView) : RecyclerView.ViewHolder(root
         }
 
 
-        itemView.talkSwitch.setOnClickListener {
+        itemView.shareView.setOnClickListener {
             val intent = Intent(Intent.ACTION_SEND)
             intent.putExtra(Intent.EXTRA_SUBJECT, response.title)
             intent.putExtra(Intent.EXTRA_TEXT, response.abstract)
