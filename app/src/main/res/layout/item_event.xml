@@ -81,15 +81,14 @@
                 android:layout_height="wrap_content"
                 android:padding="16dp" />
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/shareView"
                 style="@style/ShareButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:padding="16dp"
-
-                android:src="@drawable/ic_share_grey600_24dp" />
+                android:src="@drawable/ic_social_share" />
 
         </LinearLayout>
     </LinearLayout>
