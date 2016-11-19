@@ -3,6 +3,8 @@ package org.ligi.scr
 import android.content.Intent
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
+import android.text.Html
+import android.text.method.LinkMovementMethod
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import info.metadude.java.library.halfnarp.model.GetTalksResponse
@@ -32,7 +34,8 @@ class EventViewHolder(private val root: CardView) : RecyclerView.ViewHolder(root
     fun apply(response: GetTalksResponse) {
 
         itemView.titleTV.text = response.title
-        itemView.abstractTV.text = response.abstract
+        itemView.abstractTV.text = Html.fromHtml(response.abstract)
+        itemView.abstractTV.movementMethod = LinkMovementMethod.getInstance()
         itemView.speaker.text = response.speakers
         itemView.track.text = response.trackName
 
