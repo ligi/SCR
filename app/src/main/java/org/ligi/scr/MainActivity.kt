@@ -28,6 +28,7 @@ import retrofit.Callback
 import retrofit.Response
 import retrofit.Retrofit
 
+
 class MainActivity : AppCompatActivity() {
 
     internal val KEY_LAST_POSITION = "last_scroll_position"
@@ -39,12 +40,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
+        setSupportActionBar(toolbar)
 
-        supportActionBar?.apply {
-            setDisplayShowHomeEnabled(true)
-            subtitle = "33C3 Halfnarp"
-            subtitle = "Schedule Conflict Resolver"
-        }
+        collapsing_toolbar.title = "33C3 HalfNarp"
+
 
         fab.setOnClickListener {
             val uuidOrNull = prefs.getString("uuid", null)
@@ -104,7 +103,7 @@ class MainActivity : AppCompatActivity() {
                 matrix.postRotate(90f)
                 val source = BitmapFactory.decodeResource(resources, R.drawable.bg_src)
                 val bitmap = Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
-                ViewCompat.setBackground(trackRecycler,BitmapDrawable(resources, bitmap))
+                ViewCompat.setBackground(trackRecycler, BitmapDrawable(resources, bitmap))
             }
         } catch (e: Exception) {
             e.printStackTrace()
