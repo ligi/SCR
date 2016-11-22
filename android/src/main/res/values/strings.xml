@@ -4,13 +4,14 @@
     <string name="app_name">33c3 SCR</string>
     <string name="action_help">Help</string>
     <string name="help_html"> <![CDATA[
-        <h1>TLDR</h1>
-        Mark the talks you want to see to crowd-avoid talk collisions in time.
+        <h1>Why</h1>
+        Mark the talks you want to see to crowd-avoid talk collisions.
 
         <h1>Detail</h1>
         A frontend to <a href="https://github.com/tomster/halfnarp">halfnarp</a> inspired and using <a href="https://github.com/johnjohndoe/HalfnarpClient">Tobi\'s Halfnarp Client Library</a>
+        More info on the 33C3 HalfNarp <a href="https://events.ccc.de/2016/11/18/33c3-halfnarp-the-talks-that-work-for-us/">here</a>
 
-        <h1>Libraries used:</h1>
+        <h1>Libraries used</h1>
 
         - halfnarp client library from johnjohndoe<br/>
         - Kotlin from JetBrains<br/>
