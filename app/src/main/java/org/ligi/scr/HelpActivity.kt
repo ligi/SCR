@@ -2,10 +2,10 @@ package org.ligi.scr
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_help.*
+import org.ligi.compat.HtmlCompat
 
 class HelpActivity : AppCompatActivity() {
 
@@ -19,7 +19,7 @@ class HelpActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
         }
 
-        helpText.text = Html.fromHtml(getString(R.string.help_html))
+        helpText.text = HtmlCompat.fromHtml(getString(R.string.help_html))
         helpText.movementMethod = LinkMovementMethod.getInstance()
     }
 
