@@ -11,6 +11,10 @@
         A frontend to <a href="https://github.com/tomster/halfnarp">halfnarp</a> inspired and using <a href="https://github.com/johnjohndoe/HalfnarpClient">Tobi\'s Halfnarp Client Library</a>
         More info on the 33C3 HalfNarp <a href="https://events.ccc.de/2016/11/18/33c3-halfnarp-the-talks-that-work-for-us/">here</a>
 
+        <h1>Images used</h1>
+
+        The nice CCH shot is from <a href="https://www.flickr.com/photos/------------------------------/23969290986/sizes/m/">t--h--s</a>
+
         <h1>Libraries used</h1>
 
         - halfnarp client library from johnjohndoe<br/>
