@@ -60,7 +60,9 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-runtime:$kotlin_version"
 
-    compile 'com.github.johnjohndoe:halfnarpclient:v.3.0.0'
+    compile ('com.github.johnjohndoe:halfnarpclient:v.3.0.0') {
+        exclude module: 'joda-time'
+    }
 
     compile 'com.chibatching:kotpref:1.5.0'
 
@@ -69,7 +71,7 @@ dependencies {
 
     compile 'com.squareup.okhttp3:okhttp:3.4.2'
 
-    compile 'joda-time:joda-time:2.6'
+    compile 'net.danlew:android.joda:2.9.5'
     compile 'com.google.code.gson:gson:2.4'
 
     compile 'com.github.ligi:loadtoast:1.10.11'

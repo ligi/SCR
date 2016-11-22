@@ -3,6 +3,7 @@ package org.ligi.scr;
 import android.app.Application;
 import com.google.gson.Gson;
 import java.io.IOException;
+import net.danlew.android.joda.JodaTimeAndroid;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -17,6 +18,8 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        JodaTimeAndroid.init(this);
 
         new Thread(new Runnable() {
 
