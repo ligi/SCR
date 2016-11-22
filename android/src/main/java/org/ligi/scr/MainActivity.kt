@@ -169,10 +169,8 @@ class MainActivity : AppCompatActivity() {
         loadData()
     }
 
-    private fun getTalkIds(i: Int): TalkIds {
-        val talkIds = TalkIds()
-        talkIds.add(groups!![i]!!.map { it.eventId })
-        return talkIds
+    private fun getTalkIds(i: Int) = TalkIds().apply {
+        add(groups!![i]!!.map { it.eventId })
     }
 
     override fun onResume() {
@@ -254,7 +252,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_help ->  this.startActivityFromClass(HelpActivity::class.java)
+            R.id.action_help -> this.startActivityFromClass(HelpActivity::class.java)
         }
         return super.onOptionsItemSelected(item)
     }
