@@ -2,11 +2,10 @@ package org.ligi.scr;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-
 import org.ligi.axt.listeners.ActivityFinishingOnClickListener;
 import org.ligi.axt.listeners.DialogDiscardingOnClickListener;
-
-import retrofit.Callback;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 abstract class DefaultRetrofitCallback<T> implements Callback<T> {
 
@@ -19,10 +18,11 @@ abstract class DefaultRetrofitCallback<T> implements Callback<T> {
     }
 
     @Override
-    public void onFailure(Throwable error) {
+    public void onFailure(final Call<T> call, final Throwable t) {
+
         final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle(android.R.string.dialog_alert_title);
-        builder.setMessage(error.getMessage());
+        builder.setMessage(t.getMessage());
 
         if (fatal) {
             builder.setPositiveButton(android.R.string.ok, new ActivityFinishingOnClickListener(activity));

@@ -2,11 +2,11 @@ package org.ligi.scr;
 
 import android.app.Application;
 import com.google.gson.Gson;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 import com.squareup.otto.Bus;
 import java.io.IOException;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.ligi.scr.model.Conference;
 import org.ligi.scr.model.ScheduleContainer;
 import org.ligi.tracedroid.logging.Log;
@@ -14,14 +14,11 @@ import org.ligi.tracedroid.logging.Log;
 public class App extends Application {
 
     public static final Bus bus = new Bus();
-    public static PersistentTalkIds talkIds;
     public static Conference conference;
 
     @Override
     public void onCreate() {
-        talkIds = new PersistentTalkIds(this);
         super.onCreate();
-
 
         new Thread(new Runnable() {
 

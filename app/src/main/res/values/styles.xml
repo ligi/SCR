@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppThemeNoToolbar" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimaryDark">@color/secondary</item>
         <item name="colorPrimary">@color/primary</item>
         <item name="colorAccent">@color/accent</item>
@@ -9,6 +9,14 @@
         <item name="actionModeBackground">@color/secondary</item>
     </style>
 
+    <style name="AppTheme" parent="Theme.AppCompat">
+        <item name="colorPrimaryDark">@color/secondary</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorAccent">@color/accent</item>
+
+        <item name="color">@color/secondary</item>
+        <item name="actionModeBackground">@color/secondary</item>
+    </style>
     <style name="ShareButton">
         <item name="android:background">@drawable/clickable_bg</item>
     </style>

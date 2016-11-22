@@ -12,7 +12,6 @@ import kotlinx.android.synthetic.main.item_event.view.*
 import org.joda.time.format.DateTimeFormat
 import org.ligi.scr.model.Event
 import org.ligi.scr.model.decorated.EventDecorator
-import java.util.*
 
 class EventViewHolder(private val root: CardView) : RecyclerView.ViewHolder(root) {
 
@@ -21,7 +20,7 @@ class EventViewHolder(private val root: CardView) : RecyclerView.ViewHolder(root
         val eventDecorator = EventDecorator(response)
 
         itemView.titleTV.text = response.title + response.room
-        itemView.speaker.text = "" + response.duration
+        itemView.speaker.text = response.duration
         itemView.abstractTV.text = eventDecorator.start.toString(DateTimeFormat.shortTime()) + " " + eventDecorator.end.toString(DateTimeFormat.shortTime()) + " " + response.abstractText
 
         val main = 5 * eventDecorator.duration.standardMinutes
@@ -30,32 +29,20 @@ class EventViewHolder(private val root: CardView) : RecyclerView.ViewHolder(root
         root.requestLayout()
     }
 
-
-    fun apply(response: GetTalksResponse) {
-
+    fun apply(response: GetTalksResponse, moveMethod: (Int, Int) -> Unit) {
         itemView.titleTV.text = response.title
         itemView.abstractTV.text = Html.fromHtml(response.abstract)
         itemView.abstractTV.movementMethod = LinkMovementMethod.getInstance()
         itemView.speaker.text = response.speakers
-        itemView.track.text = response.trackName
 
-        itemView.talkSwitch.setOnCheckedChangeListener(null)
 
-        itemView.talkSwitch.isChecked = App.talkIds.talkIds.contains(response.eventId)
-
-        itemView.talkSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-            val talkIds = TreeSet(App.talkIds.talkIds)
-            if (isChecked) {
-                talkIds.add(response.eventId)
-            } else {
-                talkIds.remove(response.eventId)
-            }
-            App.talkIds.clear()
-            App.talkIds.add(talkIds)
-            App.talkIds.save()
-            App.bus.post(TalkIdsChangeEvent())
+        itemView.yesButton.setOnClickListener {
+            moveMethod.invoke(1, adapterPosition)
         }
 
+        itemView.noButton.setOnClickListener {
+            moveMethod.invoke(-1, adapterPosition)
+        }
 
         itemView.shareView.setOnClickListener {
             val intent = Intent(Intent.ACTION_SEND)
@@ -64,7 +51,6 @@ class EventViewHolder(private val root: CardView) : RecyclerView.ViewHolder(root
             intent.type = "text/plain"
             root.context.startActivity(intent)
         }
-
     }
 
 }
