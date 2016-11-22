@@ -72,7 +72,7 @@ dependencies {
     compile 'joda-time:joda-time:2.6'
     compile 'com.google.code.gson:gson:2.4'
 
-    compile 'net.steamcrafted:load-toast:1.0.9'
+    compile 'com.github.ligi:loadtoast:1.10.11'
     compile 'com.github.ligi:ExtraCompats:0.4'
 
 }
