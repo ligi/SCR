@@ -34,7 +34,20 @@ android {
         // from okhttp
         disable "InvalidPackage"
     }
+
+     productFlavors {
+
+        dev {
+            minSdkVersion 21
+        }
+
+        prod {
+        }
+    }
+
+
 }
+
 
 dependencies {
 
