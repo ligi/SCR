@@ -2,8 +2,7 @@ package org.ligi.scr;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import org.ligi.axt.listeners.ActivityFinishingOnClickListener;
-import org.ligi.axt.listeners.DialogDiscardingOnClickListener;
+import android.content.DialogInterface;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -25,9 +24,15 @@ abstract class DefaultRetrofitCallback<T> implements Callback<T> {
         builder.setMessage(t.getMessage());
 
         if (fatal) {
-            builder.setPositiveButton(android.R.string.ok, new ActivityFinishingOnClickListener(activity));
+            builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(final DialogInterface dialogInterface, final int i) {
+                    dialogInterface.dismiss();
+                    activity.finish();
+                }
+            });
         } else {
-            builder.setPositiveButton(android.R.string.ok, new DialogDiscardingOnClickListener());
+            builder.setPositiveButton(android.R.string.ok, null);
         }
 
         builder.show();

@@ -23,7 +23,7 @@ import info.metadude.java.library.halfnarp.model.TalkIds
 import info.metadude.java.library.halfnarp.model.UpdateTalkPreferencesSuccessResponse
 import kotlinx.android.synthetic.main.activity_main.*
 import net.steamcrafted.loadtoast.LoadToast
-import org.ligi.axt.AXT
+import org.ligi.kaxt.startActivityFromClass
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -254,7 +254,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_help -> AXT.at(this).startCommonIntent().activityFromClass(HelpActivity::class.java)
+            R.id.action_help ->  this.startActivityFromClass(HelpActivity::class.java)
         }
         return super.onOptionsItemSelected(item)
     }
