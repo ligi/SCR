@@ -193,8 +193,6 @@ class MainActivity : AppCompatActivity() {
             // form follows function
         }
 
-        App.bus.register(this)
-
         trackRecycler.layoutManager.scrollToPosition(State.lastPos)
 
         if (State.lastUpdateSaved) {
@@ -205,8 +203,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onPause() {
-        App.bus.unregister(this)
-
         State.lastPos = (trackRecycler.layoutManager as StaggeredGridLayoutManager).findFirstVisibleItemPositions(null)[0]
 
         super.onPause()

@@ -2,7 +2,6 @@ package org.ligi.scr;
 
 import android.app.Application;
 import com.google.gson.Gson;
-import com.squareup.otto.Bus;
 import java.io.IOException;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -13,7 +12,6 @@ import org.ligi.tracedroid.logging.Log;
 
 public class App extends Application {
 
-    public static final Bus bus = new Bus();
     public static Conference conference;
 
     @Override
