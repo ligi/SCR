@@ -11,8 +11,8 @@ android {
         applicationId "org.ligi.scr"
         minSdkVersion 9
         targetSdkVersion 25
-        versionCode 7
-        versionName "0.7"
+        versionCode 8
+        versionName "0.8"
         archivesBaseName = "SCR-$versionName"
     }
 
