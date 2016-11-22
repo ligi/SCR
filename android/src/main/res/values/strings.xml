@@ -10,11 +10,16 @@
         <h1>Detail</h1>
         A frontend to <a href="https://github.com/tomster/halfnarp">halfnarp</a> inspired and using <a href="https://github.com/johnjohndoe/HalfnarpClient">Tobi\'s Halfnarp Client Library</a>
 
-        <h1>Libraries</h1>
+        <h1>Libraries used:</h1>
 
-        - halfnarp client library<br/>
-        - Otto from Square<br/>
-        - Android stuff from Google.<br/>
+        - halfnarp client library from johnjohndoe<br/>
+        - Kotlin from JetBrains<br/>
+        - Joda-time and backport from danelw<br/>
+        - Load-Toast from code-mc<br/>
+        - KotPref by chibatching<br/>
+        - OkHttp and Moshi from Square<br/>
+        - AXT,tracedroid and ExtraCompats by ligi<br/>
+        - Android, gson and support-libraries from Google.<br/>
 
         <h1>Code</h1>
         You can find the code <a href="https://github.com/ligi/SCR">on GitHub</a> - obey the GPL !-)
