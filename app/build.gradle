@@ -60,5 +60,6 @@ dependencies {
     compile 'com.google.code.gson:gson:2.4'
 
     compile 'net.steamcrafted:load-toast:1.0.9'
+    compile 'com.github.ligi:ExtraCompats:0.4'
 
 }
