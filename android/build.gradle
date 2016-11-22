@@ -14,8 +14,8 @@ android {
         applicationId "org.ligi.scr"
         minSdkVersion 9
         targetSdkVersion 25
-        versionCode 9
-        versionName "0.9"
+        versionCode 30
+        versionName "3.0"
         archivesBaseName = "SCR-$versionName"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
