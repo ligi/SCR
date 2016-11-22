@@ -47,7 +47,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-runtime:$kotlin_version"
 
-    compile 'com.github.johnjohndoe:halfnarpclient:616aa2836b7a7cc086ff7b07a304fc8d650cdc8e'
+    compile 'com.github.johnjohndoe:halfnarpclient:v.3.0.0'
 
     compile 'com.chibatching:kotpref:1.5.0'
 
