@@ -1,5 +1,8 @@
 package org.ligi.scr
 
+import android.content.ActivityNotFoundException
+import android.content.DialogInterface
+import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -9,6 +12,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewCompat
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.OrientationHelper
 import android.support.v7.widget.RecyclerView
@@ -24,6 +28,7 @@ import info.metadude.java.library.halfnarp.model.UpdateTalkPreferencesSuccessRes
 import kotlinx.android.synthetic.main.activity_main.*
 import net.steamcrafted.loadtoast.LoadToast
 import org.ligi.kaxt.startActivityFromClass
+import org.ligi.kaxt.startActivityFromURL
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -91,7 +96,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
@@ -119,47 +123,8 @@ class MainActivity : AppCompatActivity() {
         })
         maybeTab.select()
         fab.setOnClickListener {
-            val uuidOrNull = State.lastUUID
-
-            setStateSaved()
-
-            if (uuidOrNull == null) {
-
-                val loadToast = LoadToast(this).setText("Initial upload").show()
-
-                Handler().postDelayed({
-
-                    ApiModule.getTalkPreferencesService().createTalkPreferences(getTalkIds(2)).enqueue(object : Callback<CreateTalkPreferencesSuccessResponse> {
-                        override fun onResponse(call: Call<CreateTalkPreferencesSuccessResponse>, response: Response<CreateTalkPreferencesSuccessResponse>) {
-                            State.lastUUID = response.body().uid
-                            loadToast.success()
-                        }
-
-                        override fun onFailure(call: Call<CreateTalkPreferencesSuccessResponse>, t: Throwable?) {
-                            loadToast.error()
-                            setStateChanged()
-                        }
-
-                    })
-                }, 1500)
-
-            } else {
-                val loadToast = LoadToast(this).setText("Uploading new selection").show()
-
-                Handler().postDelayed({
-                    ApiModule.getTalkPreferencesService().updateTalkPreferences(uuidOrNull, getTalkIds(2)).enqueue(object : Callback<UpdateTalkPreferencesSuccessResponse> {
-                        override fun onResponse(call: Call<UpdateTalkPreferencesSuccessResponse>?, response: Response<UpdateTalkPreferencesSuccessResponse>?) {
-                            loadToast.success()
-                        }
-
-                        override fun onFailure(call: Call<UpdateTalkPreferencesSuccessResponse>?, t: Throwable?) {
-                            loadToast.error()
-                            setStateChanged()
-                        }
-
-                    })
-                }, 1500)
-            }
+            //submitVotes()
+            transferToSchedule()
         }
 
         val itemTouchHelper = ItemTouchHelper(MyItemTouchHelper())
@@ -167,6 +132,72 @@ class MainActivity : AppCompatActivity() {
         itemTouchHelper.attachToRecyclerView(trackRecycler)
 
         loadData()
+    }
+
+    private fun submitVotes() {
+
+        val uuidOrNull = State.lastUUID
+
+        setStateSaved()
+
+        if (uuidOrNull == null) {
+
+            val loadToast = LoadToast(this).setText("Initial upload").show()
+
+            Handler().postDelayed({
+
+                ApiModule.getTalkPreferencesService().createTalkPreferences(getTalkIds(2)).enqueue(object : Callback<CreateTalkPreferencesSuccessResponse> {
+                    override fun onResponse(call: Call<CreateTalkPreferencesSuccessResponse>, response: Response<CreateTalkPreferencesSuccessResponse>) {
+                        State.lastUUID = response.body().uid
+                        loadToast.success()
+                    }
+
+                    override fun onFailure(call: Call<CreateTalkPreferencesSuccessResponse>, t: Throwable?) {
+                        loadToast.error()
+                        setStateChanged()
+                    }
+
+                })
+            }, 1500)
+
+        } else {
+            val loadToast = LoadToast(this).setText("Uploading new selection").show()
+
+            Handler().postDelayed({
+                ApiModule.getTalkPreferencesService().updateTalkPreferences(uuidOrNull, getTalkIds(2)).enqueue(object : Callback<UpdateTalkPreferencesSuccessResponse> {
+                    override fun onResponse(call: Call<UpdateTalkPreferencesSuccessResponse>?, response: Response<UpdateTalkPreferencesSuccessResponse>?) {
+                        loadToast.success()
+                    }
+
+                    override fun onFailure(call: Call<UpdateTalkPreferencesSuccessResponse>?, t: Throwable?) {
+                        loadToast.error()
+                        setStateChanged()
+                    }
+
+                })
+            }, 1500)
+        }
+    }
+
+    private fun transferToSchedule() {
+        val sendIntent = Intent()
+
+        val res = getTalkIds(2).sortedTalkIds.joinToString(",")
+        sendIntent.putExtra("CSV", res)
+
+        sendIntent.setClassName("org.ligi.fahrplan", "org.ligi.fahrplan.TalkPrefsImportActivity")
+
+        try {
+            startActivity(sendIntent)
+        } catch (e: ActivityNotFoundException) {
+            AlertDialog.Builder(this).setMessage("Please install the latest version of 33c3 Fahrplan")
+                    .setPositiveButton(android.R.string.ok, { dialogInterface: DialogInterface, i: Int ->
+                        startActivityFromURL("https://play.google.com/store/apps/details?id=org.ligi.fahrplan")
+                    })
+                    .setNegativeButton(android.R.string.cancel, { dialogInterface: DialogInterface, i: Int ->
+                    })
+                    .show()
+        }
     }
 
     private fun getTalkIds(i: Int) = TalkIds().apply {
@@ -224,6 +255,12 @@ class MainActivity : AppCompatActivity() {
 
                 setCurrentAdapter()
                 setTabNames()
+                AlertDialog.Builder(this@MainActivity).setMessage("The Halfnarp is over - you can now transfer your selection to the schedule app")
+                        .setPositiveButton("transfer",{ dialogInterface: DialogInterface, i: Int ->
+                            transferToSchedule()
+                        })
+                        .setNegativeButton(android.R.string.cancel,{ dialogInterface: DialogInterface, i: Int -> })
+                        .show()
             }
         })
     }
@@ -252,7 +289,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_help -> this.startActivityFromClass(HelpActivity::class.java)
+            R.id.action_help -> this.startActivityFromClass(ListActivity::class.java)
         }
         return super.onOptionsItemSelected(item)
     }
