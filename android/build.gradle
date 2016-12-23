@@ -124,5 +124,6 @@ dependencies {
 spoon {
     debug = true
     grantAllPermissions = true
+    skipDevices = ['3200d5cd47677000']
 }
 
